@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,48 +22,152 @@ class _HomePageState extends State<HomePage> {
     '',
   ];
 
+  int onScore = 0;
+  int exScore = 0;
+  int filledBoxes = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 21, 29, 59),
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-        ),
-        itemCount: 9,
-        itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            onTap: (() {
-              _tapped(index);
-            }),
+      body: Column(
+        children: <Widget>[
+          Expanded(
             child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color.fromARGB(255, 218, 219, 189),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                    ),
+                    Text(
+                      'Scoreboard',
+                      style: GoogleFonts.lato(
+                        fontSize: 30,
+                        fontStyle: FontStyle.italic,
+                        color: Color.fromARGB(255, 218, 219, 189),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Player X',
+                                style: GoogleFonts.lato(
+                                  fontSize: 24,
+                                  fontStyle: FontStyle.italic,
+                                  color: Color.fromARGB(255, 218, 219, 189),
+                                ),
+                              ),
+                              Text(
+                                exScore.toString(),
+                                style: GoogleFonts.lato(
+                                  fontSize: 24,
+                                  fontStyle: FontStyle.italic,
+                                  color: Color.fromARGB(255, 218, 219, 189),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Player O',
+                                style: GoogleFonts.lato(
+                                  fontSize: 24,
+                                  fontStyle: FontStyle.italic,
+                                  color: Color.fromARGB(255, 218, 219, 189),
+                                ),
+                              ),
+                              Text(
+                                onScore.toString(),
+                                style: GoogleFonts.lato(
+                                  fontSize: 24,
+                                  fontStyle: FontStyle.italic,
+                                  color: Color.fromARGB(255, 218, 219, 189),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+              ),
+              itemCount: 9,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: (() {
+                    _tapped(index);
+                  }),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color.fromARGB(255, 218, 219, 189),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        displayExOh[index],
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 216, 33, 72),
+                          fontSize: 40,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          Expanded(
+            child: Container(
               child: Center(
                 child: Text(
-                  displayExOh[index],
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 216, 33, 72),
-                    fontSize: 40,
+                  'TIC TAC TOE',
+                  style: GoogleFonts.lato(
+                    fontSize: 24,
+                    fontStyle: FontStyle.italic,
+                    color: Color.fromARGB(255, 218, 219, 189),
                   ),
                 ),
               ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
 
   void _tapped(int index) {
     setState(() {
-      if (onTurn) {
+      if (onTurn && displayExOh[index] == '') {
         displayExOh[index] = 'O';
-      } else {
+        filledBoxes += 1;
+      } else if (!onTurn && displayExOh[index] == '') {
         displayExOh[index] = 'X';
+        filledBoxes += 1;
       }
       onTurn = !onTurn;
       _Winner();
@@ -119,17 +224,69 @@ class _HomePageState extends State<HomePage> {
         displayExOh[0] == displayExOh[8] &&
         displayExOh[0] != '') {
       _dialogWinner(displayExOh[0]);
+    } else if (filledBoxes == 9) {
+      _drawDialog();
     }
+  }
+
+  void _drawDialog() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(
+            child: Text('DRAW'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                _clearBoard();
+                Navigator.of(context).pop();
+              },
+              child: Text('Play Again!'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _dialogWinner(String winner) {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(winner + ' WIN'),
+          title: Center(
+            child: Text('Winner is: ' + winner),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                _clearBoard();
+                Navigator.of(context).pop();
+              },
+              child: Text('Play Again!'),
+            ),
+          ],
         );
       },
     );
+    if (winner == 'O') {
+      onScore += 1;
+    } else if (winner == 'X') {
+      exScore += 1;
+    }
+    _clearBoard();
+  }
+
+  void _clearBoard() {
+    setState(() {
+      for (int i = 0; i < 9; i++) {
+        displayExOh[i] = '';
+      }
+    });
+    filledBoxes = 0;
   }
 }
