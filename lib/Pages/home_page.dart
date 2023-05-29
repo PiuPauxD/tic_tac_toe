@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -33,79 +35,77 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: Container(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                  ),
+                  Text(
+                    'Scoreboard',
+                    style: GoogleFonts.lato(
+                      fontSize: 30,
+                      fontStyle: FontStyle.italic,
+                      color: Color.fromARGB(255, 218, 219, 189),
                     ),
-                    Text(
-                      'Scoreboard',
-                      style: GoogleFonts.lato(
-                        fontSize: 30,
-                        fontStyle: FontStyle.italic,
-                        color: Color.fromARGB(255, 218, 219, 189),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Player X',
+                              style: GoogleFonts.lato(
+                                fontSize: 24,
+                                fontStyle: FontStyle.italic,
+                                color: Color.fromARGB(255, 218, 219, 189),
+                              ),
+                            ),
+                            Text(
+                              exScore.toString(),
+                              style: GoogleFonts.lato(
+                                fontSize: 24,
+                                fontStyle: FontStyle.italic,
+                                color: Color.fromARGB(255, 218, 219, 189),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Player X',
-                                style: GoogleFonts.lato(
-                                  fontSize: 24,
-                                  fontStyle: FontStyle.italic,
-                                  color: Color.fromARGB(255, 218, 219, 189),
-                                ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Player O',
+                              style: GoogleFonts.lato(
+                                fontSize: 24,
+                                fontStyle: FontStyle.italic,
+                                color: Color.fromARGB(255, 218, 219, 189),
                               ),
-                              Text(
-                                exScore.toString(),
-                                style: GoogleFonts.lato(
-                                  fontSize: 24,
-                                  fontStyle: FontStyle.italic,
-                                  color: Color.fromARGB(255, 218, 219, 189),
-                                ),
+                            ),
+                            Text(
+                              onScore.toString(),
+                              style: GoogleFonts.lato(
+                                fontSize: 24,
+                                fontStyle: FontStyle.italic,
+                                color: Color.fromARGB(255, 218, 219, 189),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Player O',
-                                style: GoogleFonts.lato(
-                                  fontSize: 24,
-                                  fontStyle: FontStyle.italic,
-                                  color: Color.fromARGB(255, 218, 219, 189),
-                                ),
-                              ),
-                              Text(
-                                onScore.toString(),
-                                style: GoogleFonts.lato(
-                                  fontSize: 24,
-                                  fontStyle: FontStyle.italic,
-                                  color: Color.fromARGB(255, 218, 219, 189),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
@@ -142,15 +142,13 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            child: Container(
-              child: Center(
-                child: Text(
-                  'TIC TAC TOE',
-                  style: GoogleFonts.lato(
-                    fontSize: 24,
-                    fontStyle: FontStyle.italic,
-                    color: Color.fromARGB(255, 218, 219, 189),
-                  ),
+            child: Center(
+              child: Text(
+                'TIC TAC TOE',
+                style: GoogleFonts.lato(
+                  fontSize: 24,
+                  fontStyle: FontStyle.italic,
+                  color: Color.fromARGB(255, 218, 219, 189),
                 ),
               ),
             ),
@@ -170,11 +168,11 @@ class _HomePageState extends State<HomePage> {
         filledBoxes += 1;
       }
       onTurn = !onTurn;
-      _Winner();
+      _winner();
     });
   }
 
-  void _Winner() {
+  void _winner() {
     //1st row
     if (displayExOh[0] == displayExOh[1] &&
         displayExOh[0] == displayExOh[2] &&
@@ -259,7 +257,7 @@ class _HomePageState extends State<HomePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Center(
-            child: Text('Winner is: ' + winner),
+            child: Text('Winner is: $winner'),
           ),
           actions: [
             TextButton(
